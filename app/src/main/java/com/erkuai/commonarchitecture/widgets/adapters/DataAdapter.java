@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.erkuai.commonarchitecture.R;
+import com.erkuai.commonarchitecture.bean.Person;
 
 import java.util.List;
 
@@ -14,21 +15,20 @@ import java.util.List;
  * Created by Administrator on 2019/11/12 17:37.
  */
 
-public class DataAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
+public class DataAdapter extends BaseQuickAdapter<Person, BaseViewHolder> {
 
-    public DataAdapter(@Nullable List<String> data) {
+    public DataAdapter(@Nullable List<Person> data) {
         super(R.layout.adapter_data, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, String item) {
+    protected void convert(BaseViewHolder helper, Person item) {
 
-        String[] split = item.split(",");
         TextView name = helper.getView(R.id.name);
         TextView tel = helper.getView(R.id.tel);
 
-        name.setText(split[0]);
-        tel.setText(split[1]);
+        name.setText(item.getName());
+        tel.setText(item.getPhone_number());
 
     }
 }

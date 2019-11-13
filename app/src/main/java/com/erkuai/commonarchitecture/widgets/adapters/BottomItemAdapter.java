@@ -2,15 +2,11 @@ package com.erkuai.commonarchitecture.widgets.adapters;
 
 import android.graphics.Color;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 import com.erkuai.commonarchitecture.R;
-import com.erkuai.commonarchitecture.bean.JokeInfo;
-import com.erkuai.commonarchitecture.utils.ImageLoader;
 
 import java.util.List;
 

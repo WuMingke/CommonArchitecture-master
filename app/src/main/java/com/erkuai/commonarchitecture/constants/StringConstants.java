@@ -28,6 +28,6 @@ public class StringConstants {
     public static final String PERSON_EXCEL = "person.xls";
 
     public static final String PERSON_EXCEL_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() +
-            File.separator + JIANGJIANGJIANG + File.separator + PERSON_EXCEL;
+            File.separator + JIANGJIANGJIANG;
 
 }
