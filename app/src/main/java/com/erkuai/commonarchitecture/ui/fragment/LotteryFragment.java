@@ -85,16 +85,16 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
         switch (position) {
             case 0://start
 
+                if (dataList.size() == 0) return;
+
                 if (timer == null) {
-                    timer = new CountDownTimer(2 * 60 * 1000, 200) {
+                    timer = new CountDownTimer(2 * 60 * 1000, 180) {
 
                         @Override
                         public void onTick(long millisUntilFinished) {
                             int i = (int) (Math.random() * (dataList.size()));
                             name.setText(dataList.get(i).getName());
                             tel.setText(dataList.get(i).getPhone_number());
-
-                            Log.i("wmk", "i-------" + i);
                         }
 
                         @Override
@@ -117,7 +117,9 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
                         }
                     }
                 }
-                timer.cancel();
+                if (timer != null) {
+                    timer.cancel();
+                }
                 break;
         }
     }

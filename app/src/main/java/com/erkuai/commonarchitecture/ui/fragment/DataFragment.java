@@ -94,7 +94,7 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
         sure.setOnClickListener(this);
         export_data.setOnClickListener(this);
 
-        SoftKeyBoardListener.setListener(getActivity(),this);
+        SoftKeyBoardListener.setListener(getActivity(), this);
 
     }
 
@@ -116,6 +116,7 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
 
                 List<Person> list = personDao.queryBuilder().list();
                 dataAdapter.setNewData(list);
+                data_recycler.smoothScrollToPosition(list.size());
                 title.setText("已参与：" + list.size());
                 name_et.setText("");
                 tel_et.setText("");
