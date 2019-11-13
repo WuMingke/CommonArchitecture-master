@@ -57,6 +57,7 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
         bottomItemAdapter = new BottomItemAdapter(bottom_items);
         bottomItemAdapter.setOnItemClickListener(this);
         btn_layout.setAdapter(bottomItemAdapter);
+        bottomItemAdapter.setPosition(1);
     }
 
     @Override

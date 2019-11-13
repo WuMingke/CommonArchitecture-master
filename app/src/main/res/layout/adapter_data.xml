@@ -16,8 +16,8 @@
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="center"
-            android:padding="5dp"
-            android:textSize="18sp"
+            android:padding="10dp"
+            android:textSize="19sp"
             tools:text="Jack" />
 
         <TextView
@@ -35,6 +35,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@color/grey" />
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@color/grey_70" />
 
 </LinearLayout>

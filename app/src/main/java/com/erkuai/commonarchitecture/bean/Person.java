@@ -2,6 +2,7 @@ package com.erkuai.commonarchitecture.bean;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Property;
 
 /**
  * Created by Administrator on 2019/11/13 9:20.
@@ -10,8 +11,10 @@ import org.greenrobot.greendao.annotation.Generated;
 @Entity
 public class Person {
 
+    @Property(nameInDb = "姓名")
     private String name;
 
+    @Property(nameInDb = "电话号码")
     private String phone_number;
 
     @Generated(hash = 503321745)

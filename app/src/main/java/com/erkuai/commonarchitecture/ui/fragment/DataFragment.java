@@ -1,13 +1,19 @@
 package com.erkuai.commonarchitecture.ui.fragment;
 
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.ajts.androidmads.library.SQLiteToExcel;
 import com.erkuai.commonarchitecture.R;
@@ -19,13 +25,9 @@ import com.erkuai.commonarchitecture.bean.PersonDao;
 import com.erkuai.commonarchitecture.constants.StringConstants;
 import com.erkuai.commonarchitecture.http.contract.SimpleContract;
 import com.erkuai.commonarchitecture.http.presenter.SimplePresenter;
+import com.erkuai.commonarchitecture.utils.SoftKeyBoardListener;
 import com.erkuai.commonarchitecture.widgets.adapters.DataAdapter;
 
-
-import org.greenrobot.greendao.query.QueryBuilder;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -34,7 +36,7 @@ import butterknife.BindView;
  * Created by Administrator on 2019/8/9.
  */
 
-public class DataFragment extends BaseFragment<SimplePresenter> implements SimpleContract.SimpleView, View.OnClickListener {
+public class DataFragment extends BaseFragment<SimplePresenter> implements SimpleContract.SimpleView, View.OnClickListener, SoftKeyBoardListener.OnSoftKeyBoardChangeListener {
 
     @BindView(R.id.tel_et)
     EditText tel_et;
@@ -50,6 +52,12 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
 
     @BindView(R.id.export_data)
     Button export_data;
+
+    @BindView(R.id.title)
+    TextView title;
+
+    @BindView(R.id.bottom_layout)
+    LinearLayout bottom_layout;
 
     private DataAdapter dataAdapter;
     private PersonDao personDao;
@@ -79,12 +87,15 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
         personDao = daoSession.getPersonDao();
         List<Person> list = personDao.queryBuilder().list();
 
+        title.setText("已参与：" + list.size());
 
         data_recycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         dataAdapter = new DataAdapter(list);
         data_recycler.setAdapter(dataAdapter);
         sure.setOnClickListener(this);
         export_data.setOnClickListener(this);
+
+        SoftKeyBoardListener.setListener(getActivity(),this);
 
     }
 
@@ -96,11 +107,22 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
                 String name = name_et.getText().toString();
                 String tel = tel_et.getText().toString();
 
+                if (TextUtils.isEmpty(name) || TextUtils.isEmpty(tel)) {
+                    showToast("请输入正确的姓名/电话号码");
+                    return;
+                }
+
                 //数据库存储
                 personDao.insert(new Person(name, tel));
 
                 List<Person> list = personDao.queryBuilder().list();
                 dataAdapter.setNewData(list);
+                title.setText("已参与：" + list.size());
+                name_et.setText("");
+                tel_et.setText("");
+
+                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(sure.getWindowToken(), 0);
 
                 break;
 
@@ -123,5 +145,19 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
                 });
                 break;
         }
+    }
+
+    @Override
+    public void keyBoardShow(int height) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) bottom_layout.getLayoutParams();
+        params.bottomMargin = height;
+        bottom_layout.setLayoutParams(params);
+    }
+
+    @Override
+    public void keyBoardHide(int height) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) bottom_layout.getLayoutParams();
+        params.bottomMargin = 0;
+        bottom_layout.setLayoutParams(params);
     }
 }

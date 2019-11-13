@@ -124,7 +124,7 @@ public class SettingFragment extends BaseFragment<SimplePresenter> implements Si
                         set_lottery.setVisibility(View.GONE);
 
                         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.showSoftInput(lottery_et, 0);
+                        imm.hideSoftInputFromWindow(lottery_et.getWindowToken(), 0);
                         break;
                 }
                 break;

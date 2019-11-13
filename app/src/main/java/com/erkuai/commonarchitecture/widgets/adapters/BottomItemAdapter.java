@@ -16,7 +16,7 @@ import java.util.List;
 
 public class BottomItemAdapter extends BaseQuickAdapter<String, BaseViewHolder> {
 
-    private int mPosition = 1;
+    private int mPosition = 0;
 
     public BottomItemAdapter(@Nullable List<String> data) {
         super(R.layout.adapter_book_info, data);

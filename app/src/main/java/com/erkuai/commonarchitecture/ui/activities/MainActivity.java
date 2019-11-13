@@ -76,7 +76,7 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         uiItemAdapter = new UIItemAdapter(fragments, getSupportFragmentManager());
         view_pager.setAdapter(uiItemAdapter);
         view_pager.setOnPageChangeListener(this);
-        view_pager.setCurrentItem(1);
+        view_pager.setCurrentItem(0);
 
         RxPermissions rxPermissions = new RxPermissions(this);
         rxPermissions.request(Manifest.permission.READ_EXTERNAL_STORAGE,
