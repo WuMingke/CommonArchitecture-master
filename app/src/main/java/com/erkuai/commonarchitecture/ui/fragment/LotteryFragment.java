@@ -1,19 +1,29 @@
 package com.erkuai.commonarchitecture.ui.fragment;
 
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.erkuai.commonarchitecture.R;
 import com.erkuai.commonarchitecture.base.BaseFragment;
+import com.erkuai.commonarchitecture.bean.Person;
+import com.erkuai.commonarchitecture.bean.PersonDao;
+import com.erkuai.commonarchitecture.constants.StringConstants;
 import com.erkuai.commonarchitecture.http.contract.SimpleContract;
 import com.erkuai.commonarchitecture.http.presenter.SimplePresenter;
+import com.erkuai.commonarchitecture.utils.Utils;
 import com.erkuai.commonarchitecture.widgets.adapters.BottomItemAdapter;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -26,10 +36,18 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
     @BindView(R.id.btn_layout)
     RecyclerView btn_layout;
 
-    @BindView(R.id.lottery)
-    TextView lottery;
+    @BindView(R.id.name)
+    TextView name;
+
+    @BindView(R.id.tel)
+    TextView tel;
 
     private BottomItemAdapter bottomItemAdapter;
+
+    private List<Person> dataList;
+
+    private Handler mHandler = new Handler();
+    private CountDownTimer timer;
 
     @Override
     protected void initInject(Bundle bundle) {
@@ -58,10 +76,62 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
         bottomItemAdapter.setOnItemClickListener(this);
         btn_layout.setAdapter(bottomItemAdapter);
         bottomItemAdapter.setPosition(1);
+
     }
 
     @Override
     public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
         bottomItemAdapter.setPosition(position);
+        switch (position) {
+            case 0://start
+
+                if (timer == null) {
+                    timer = new CountDownTimer(2 * 60 * 1000, 200) {
+
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            int i = (int) (Math.random() * (dataList.size()));
+                            name.setText(dataList.get(i).getName());
+                            tel.setText(dataList.get(i).getPhone_number());
+
+                            Log.i("wmk", "i-------" + i);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            timer.start();
+                        }
+                    };
+                }
+                timer.start();
+
+                break;
+            case 1://stop
+                String phone_number_data = Utils.readData(StringConstants.JIANGJIANGJIANG, StringConstants.LOTTERY);
+                if (!TextUtils.isEmpty(phone_number_data)) {
+                    for (int i = 0; i < dataList.size(); i++) {
+                        if (dataList.get(i).getPhone_number().equals(phone_number_data)) {
+                            name.setText(dataList.get(i).getName());
+                            tel.setText(dataList.get(i).getPhone_number());
+                            break;
+                        }
+                    }
+                }
+                timer.cancel();
+                break;
+        }
     }
+
+    public void setDataList(List<Person> dataList) {
+        this.dataList = dataList;
+        if (dataList.size() != 0) {
+            name.setText(dataList.get(0).getName());
+            tel.setText(dataList.get(0).getPhone_number());
+        } else {
+            name.setText("当前还没有人参与哦..");
+        }
+
+    }
+
+
 }

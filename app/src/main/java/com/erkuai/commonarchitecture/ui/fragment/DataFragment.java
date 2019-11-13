@@ -62,6 +62,10 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
     private DataAdapter dataAdapter;
     private PersonDao personDao;
 
+    public void setPersonDao(PersonDao personDao) {
+        this.personDao = personDao;
+    }
+
     @Override
     protected void initInject(Bundle bundle) {
         getFragmentComponent().inject(this);
@@ -80,11 +84,6 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
     @Override
     protected void initEventAndData() {
 
-        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(getContext(), "person.db", null);
-        SQLiteDatabase db = helper.getWritableDatabase();
-        DaoMaster daoMaster = new DaoMaster(db);
-        DaoSession daoSession = daoMaster.newSession();
-        personDao = daoSession.getPersonDao();
         List<Person> list = personDao.queryBuilder().list();
 
         title.setText("已参与：" + list.size());
@@ -121,8 +120,8 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
                 name_et.setText("");
                 tel_et.setText("");
 
-                InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(sure.getWindowToken(), 0);
+               /* InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(sure.getWindowToken(), 0);*/
 
                 break;
 

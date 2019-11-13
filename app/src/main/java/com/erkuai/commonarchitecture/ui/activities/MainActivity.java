@@ -1,6 +1,7 @@
 package com.erkuai.commonarchitecture.ui.activities;
 
 import android.Manifest;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -11,6 +12,10 @@ import android.view.View;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.erkuai.commonarchitecture.R;
 import com.erkuai.commonarchitecture.base.BaseActivity;
+import com.erkuai.commonarchitecture.bean.DaoMaster;
+import com.erkuai.commonarchitecture.bean.DaoSession;
+import com.erkuai.commonarchitecture.bean.Person;
+import com.erkuai.commonarchitecture.bean.PersonDao;
 import com.erkuai.commonarchitecture.http.contract.MainContract;
 import com.erkuai.commonarchitecture.http.presenter.MainPresenter;
 import com.erkuai.commonarchitecture.ui.fragment.DataFragment;
@@ -21,6 +26,7 @@ import com.erkuai.commonarchitecture.widgets.adapters.UIItemAdapter;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import io.reactivex.functions.Consumer;
@@ -36,6 +42,8 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
 
     private BottomItemAdapter bottomItemAdapter;
     private UIItemAdapter uiItemAdapter;
+    private LotteryFragment lotteryFragment;
+    private PersonDao personDao;
 
     @Override
     protected void initInject(Bundle bundle) {
@@ -65,9 +73,16 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
         bottomItemAdapter.setOnItemClickListener(this);
         bottom_layout.setAdapter(bottomItemAdapter);
 
+        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "person.db", null);
+        SQLiteDatabase db = helper.getWritableDatabase();
+        DaoMaster daoMaster = new DaoMaster(db);
+        DaoSession daoSession = daoMaster.newSession();
+        personDao = daoSession.getPersonDao();
+
         ArrayList<Fragment> fragments = new ArrayList<>();
         DataFragment dataFragment = new DataFragment();
-        LotteryFragment lotteryFragment = new LotteryFragment();
+        dataFragment.setPersonDao(personDao);
+        lotteryFragment = new LotteryFragment();
         SettingFragment settingFragment = new SettingFragment();
         fragments.add(dataFragment);
         fragments.add(lotteryFragment);
@@ -105,6 +120,10 @@ public class MainActivity extends BaseActivity<MainPresenter> implements MainCon
     @Override
     public void onPageSelected(int position) {
         bottomItemAdapter.setPosition(position);
+        if (position == 1) {//抽检页面，更新数据
+            List<Person> list = personDao.queryBuilder().list();
+            lotteryFragment.setDataList(list);
+        }
     }
 
     @Override
