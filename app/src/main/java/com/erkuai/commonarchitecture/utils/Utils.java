@@ -22,12 +22,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 
-import io.reactivex.Observable;
+/*import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
+import io.reactivex.schedulers.Schedulers;*/
 
 /**
  * Created by Administrator on 2019/8/9.
@@ -35,7 +35,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class Utils {
 
-    public static <T> ObservableTransformer<T, T> rx2SchedulerHelperO() {    //compose简化线程
+/*    public static <T> ObservableTransformer<T, T> rx2SchedulerHelperO() {    //compose简化线程
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(Observable<T> upstream) {
@@ -43,7 +43,7 @@ public class Utils {
                         .observeOn(AndroidSchedulers.mainThread());
             }
         };
-    }
+    }*/
 
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivity = (ConnectivityManager) context

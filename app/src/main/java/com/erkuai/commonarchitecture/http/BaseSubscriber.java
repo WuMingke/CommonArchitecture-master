@@ -1,3 +1,4 @@
+/*
 package com.erkuai.commonarchitecture.http;
 
 import com.erkuai.commonarchitecture.base.BaseApplication;
@@ -25,9 +26,11 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
+*/
 /**
  * Created by Administrator on 2019/4/16.
- */
+ *//*
+
 
 public class BaseSubscriber<T> implements Observer<Object> {
 
@@ -130,3 +133,4 @@ public class BaseSubscriber<T> implements Observer<Object> {
         // Utils.showToast(BaseApplication.mContext,e.toString());
     }
 }
+*/

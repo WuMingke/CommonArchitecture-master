@@ -16,7 +16,7 @@ import com.erkuai.commonarchitecture.di.module.ActivityModule;
 import com.erkuai.commonarchitecture.http.BasePresenter;
 import com.erkuai.commonarchitecture.utils.Utils;
 
-import org.simple.eventbus.EventBus;
+
 
 import javax.inject.Inject;
 
@@ -76,7 +76,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
 
         initEventAndData();
 
-        EventBus.getDefault().register(this);
+     //   EventBus.getDefault().register(this);
 
     }
 
@@ -88,7 +88,7 @@ public abstract class BaseActivity<T extends BasePresenter> extends AppCompatAct
             mPresenter.detachView();
         }
         mUnbinder.unbind();
-        EventBus.getDefault().unregister(this);
+      //  EventBus.getDefault().unregister(this);
 
 /*        List<DataFragment> fragments = getSupportFragmentManager().getFragments();
         if (fragments != null) {

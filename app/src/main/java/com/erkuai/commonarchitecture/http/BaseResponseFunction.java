@@ -1,3 +1,4 @@
+/*
 package com.erkuai.commonarchitecture.http;
 
 import com.erkuai.commonarchitecture.constants.StringConstants;
@@ -5,9 +6,11 @@ import com.google.gson.internal.LinkedTreeMap;
 
 import io.reactivex.functions.Function;
 
+*/
 /**
  * Created by Administrator on 2019/8/9.
- */
+ *//*
+
 
 public class BaseResponseFunction implements Function<BaseResponseBean, Object> {
     @Override
@@ -29,3 +32,4 @@ public class BaseResponseFunction implements Function<BaseResponseBean, Object> 
         }
     }
 }
+*/

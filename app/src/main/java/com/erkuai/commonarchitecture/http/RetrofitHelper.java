@@ -1,3 +1,4 @@
+/*
 package com.erkuai.commonarchitecture.http;
 
 import android.annotation.SuppressLint;
@@ -23,22 +24,30 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+*/
 /**
  * Created by Administrator on 2019/8/9.
- */
+ *//*
+
 
 public class RetrofitHelper {
 
-    /****************************************请求******************************************/
+    */
+/****************************************请求******************************************//*
+
+*/
 /*    public void getJokeInfo(int page, int count, String type, BaseSubscriber<?> subscriber) {
         HashMap<String, String> map = new HashMap<>();
         map.put("page", String.valueOf(page));
         map.put("count", String.valueOf(count));
         map.put("type", type);
         getRequestBaseBean(getApi().getJokeInfo(map), subscriber);
-    }*/
+    }*//*
 
-    /****************************************配置******************************************/
+
+    */
+/****************************************配置******************************************//*
+
     private OkHttpClient okHttpClient;
     private Api api;
     private static RetrofitHelper retrofitHelper;
@@ -74,13 +83,15 @@ public class RetrofitHelper {
                 .writeTimeout(StringConstants.NETWORK_TIMEOUT, TimeUnit.SECONDS)
                 .retryOnConnectionFailure(true)
                 .addInterceptor(retrofitLog);
-        /*builder.sslSocketFactory(createSSLSocketFactory());//HTTPS配置
+        */
+/*builder.sslSocketFactory(createSSLSocketFactory());//HTTPS配置
         builder.hostnameVerifier(new HostnameVerifier() {
             @Override
             public boolean verify(String hostname, SSLSession session) {
                 return true;
             }
-        });*/
+        });*//*
+
         return builder.build();
     }
 
@@ -132,3 +143,4 @@ public class RetrofitHelper {
         observable.map(new BaseResponseFunction()).compose(Utils.rx2SchedulerHelperO()).subscribe(subscriber);
     }
 }
+*/

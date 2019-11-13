@@ -30,3 +30,33 @@ public static java.lang.String TABLENAME;
 -dontwarn net.sqlcipher.database.**
 # If you do not use RxJava:
 -dontwarn rx.**
+
+# butterknife
+-keep class butterknife.** { *; }
+-dontwarn butterknife.internal.**
+-keep class **$$ViewBinder { *; }
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <fields>;
+}
+
+-keepclasseswithmembernames class * {
+    @butterknife.* <methods>;
+}
+
+   # dagger
+-dontwarn dagger.**
+-dontwarn com.squareup.javapoet.**
+-dontwarn com.google.common.**
+
+    ### greenDAO 3
+ -keepclassmembers class * extends org.greenrobot.greendao.AbstractDao {
+    public static java.lang.String TABLENAME;
+ }
+ -keep class **$Properties
+
+    # If you do not use SQLCipher:
+ -dontwarn org.greenrobot.greendao.database.**
+
+ # apache
+ -dontwarn org.apache.poi.**

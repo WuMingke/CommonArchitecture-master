@@ -1,3 +1,4 @@
+/*
 package com.erkuai.commonarchitecture.utils;
 
 import android.graphics.Bitmap;
@@ -14,13 +15,16 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.erkuai.commonarchitecture.base.BaseApplication;
 
+*/
 /**
  * Created by Administrator on 2019/4/16.
- */
+ *//*
+
 
 public class ImageLoader {
 
-    public static void loadImage(String url, int holderResource, ImageView imageView) {
+   */
+/* public static void loadImage(String url, int holderResource, ImageView imageView) {
         Glide.with(BaseApplication.mContext).load(url)
                 .apply(RequestOptions.placeholderOf(holderResource).dontAnimate())
                 .into(imageView);
@@ -51,5 +55,7 @@ public class ImageLoader {
                     }
                 });
     }
+*//*
 
 }
+*/

@@ -2,9 +2,6 @@ package com.erkuai.commonarchitecture.http.presenter;
 
 import android.util.Log;
 
-import com.erkuai.commonarchitecture.bean.JokeInfo;
-import com.erkuai.commonarchitecture.http.BaseSubscriber;
-import com.erkuai.commonarchitecture.http.RetrofitHelper;
 import com.erkuai.commonarchitecture.http.RxPresenter;
 import com.erkuai.commonarchitecture.http.contract.MainContract;
 
@@ -12,7 +9,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.Disposable;
+//import io.reactivex.disposables.Disposable;
 
 /**
  * Created by Administrator on 2019/8/9.
