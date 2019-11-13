@@ -46,8 +46,9 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
 
     private List<Person> dataList;
 
-    private Handler mHandler = new Handler();
     private CountDownTimer timer;
+
+    private ArrayList<Integer> integers;
 
     @Override
     protected void initInject(Bundle bundle) {
@@ -87,14 +88,34 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
 
                 if (dataList.size() == 0) return;
 
+                //生成随机数
+                if (integers == null) {
+                    integers = new ArrayList<>();
+                }
+                integers.clear();
+
+                for (int i = 0; i < dataList.size(); i++) {
+                    int preNum = (int) (Math.random() * (dataList.size()));
+                    if (integers.contains(preNum)) {
+                        i--;
+                    } else {
+                        integers.add(preNum);
+                    }
+                }
+
                 if (timer == null) {
                     timer = new CountDownTimer(2 * 60 * 1000, 150) {
 
+                        int i = 0;
+
                         @Override
                         public void onTick(long millisUntilFinished) {
-                            int i = (int) (Math.random() * (dataList.size()));
-                            name.setText(dataList.get(i).getName());
-                            tel.setText(dataList.get(i).getPhone_number());
+                            name.setText(dataList.get(integers.get(i)).getName());
+                            tel.setText(dataList.get(integers.get(i)).getPhone_number());
+                            if (i == integers.size() - 1) {
+                                i = -1;
+                            }
+                            i++;
                         }
 
                         @Override
