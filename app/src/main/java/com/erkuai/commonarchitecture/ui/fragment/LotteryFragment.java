@@ -88,7 +88,7 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
                 if (dataList.size() == 0) return;
 
                 if (timer == null) {
-                    timer = new CountDownTimer(2 * 60 * 1000, 180) {
+                    timer = new CountDownTimer(2 * 60 * 1000, 150) {
 
                         @Override
                         public void onTick(long millisUntilFinished) {
@@ -129,8 +129,10 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
         if (dataList.size() != 0) {
             name.setText(dataList.get(0).getName());
             tel.setText(dataList.get(0).getPhone_number());
+            tel.setVisibility(View.VISIBLE);
         } else {
             name.setText("当前还没有人参与哦..");
+            tel.setVisibility(View.GONE);
         }
 
     }

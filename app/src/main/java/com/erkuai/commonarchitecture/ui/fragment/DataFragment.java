@@ -2,20 +2,27 @@ package com.erkuai.commonarchitecture.ui.fragment;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.ajts.androidmads.library.SQLiteToExcel;
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.erkuai.commonarchitecture.R;
 import com.erkuai.commonarchitecture.base.BaseFragment;
 import com.erkuai.commonarchitecture.bean.DaoMaster;
@@ -25,9 +32,13 @@ import com.erkuai.commonarchitecture.bean.PersonDao;
 import com.erkuai.commonarchitecture.constants.StringConstants;
 import com.erkuai.commonarchitecture.http.contract.SimpleContract;
 import com.erkuai.commonarchitecture.http.presenter.SimplePresenter;
+import com.erkuai.commonarchitecture.utils.PopupWindowUtil;
 import com.erkuai.commonarchitecture.utils.SoftKeyBoardListener;
 import com.erkuai.commonarchitecture.widgets.adapters.DataAdapter;
 
+import org.greenrobot.greendao.query.QueryBuilder;
+
+import java.nio.channels.NonReadableChannelException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,7 +47,7 @@ import butterknife.BindView;
  * Created by Administrator on 2019/8/9.
  */
 
-public class DataFragment extends BaseFragment<SimplePresenter> implements SimpleContract.SimpleView, View.OnClickListener, SoftKeyBoardListener.OnSoftKeyBoardChangeListener {
+public class DataFragment extends BaseFragment<SimplePresenter> implements SimpleContract.SimpleView, View.OnClickListener, SoftKeyBoardListener.OnSoftKeyBoardChangeListener, BaseQuickAdapter.OnItemLongClickListener {
 
     @BindView(R.id.tel_et)
     EditText tel_et;
@@ -61,6 +72,8 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
 
     private DataAdapter dataAdapter;
     private PersonDao personDao;
+    private PopupWindow popupWindow;
+    private int mPosition = -1;
 
     public void setPersonDao(PersonDao personDao) {
         this.personDao = personDao;
@@ -90,6 +103,7 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
 
         data_recycler.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         dataAdapter = new DataAdapter(list);
+        dataAdapter.setOnItemLongClickListener(this);
         data_recycler.setAdapter(dataAdapter);
         sure.setOnClickListener(this);
         export_data.setOnClickListener(this);
@@ -110,6 +124,13 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
                     showToast("请输入正确的姓名/电话号码");
                     return;
                 }
+
+                QueryBuilder<Person> where = personDao.queryBuilder().where(PersonDao.Properties.Phone_number.eq(tel));
+                if (where.count() > 0) {
+                    showToast("该电话号码已登记");
+                    return;
+                }
+
 
                 //数据库存储
                 personDao.insert(new Person(name, tel));
@@ -144,6 +165,15 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
                     }
                 });
                 break;
+            case R.id.popupwindow_layout:
+                popupWindow.dismiss();
+                //数据库删除
+                personDao.delete(dataAdapter.getData().get(mPosition));
+
+                dataAdapter.remove(mPosition);
+                List<Person> listAfterDelete = personDao.queryBuilder().list();
+                title.setText("已参与：" + listAfterDelete.size());
+                break;
         }
     }
 
@@ -159,5 +189,32 @@ public class DataFragment extends BaseFragment<SimplePresenter> implements Simpl
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) bottom_layout.getLayoutParams();
         params.bottomMargin = 0;
         bottom_layout.setLayoutParams(params);
+    }
+
+    @Override
+    public boolean onItemLongClick(BaseQuickAdapter adapter, View view, int position) {
+
+        showPopupWindow(view);
+        mPosition = position;
+
+        return true;
+    }
+
+    private void showPopupWindow(View view) {
+        View inflate = LayoutInflater.from(getContext()).inflate(R.layout.popupwindow, null);
+
+        if (null == popupWindow) {
+
+            popupWindow = new PopupWindow(inflate,
+                    ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, true);
+            // 如果不设置PopupWindow的背景，有些版本就会出现一个问题：无论是点击外部区域还是Back键都无法dismiss弹框
+            popupWindow.setBackgroundDrawable(new ColorDrawable());
+
+            inflate.setOnClickListener(this);
+        }
+
+        int windowPos[] = PopupWindowUtil.calculatePopWindowPos(view, inflate, dataAdapter.getX(), dataAdapter.getY());
+        popupWindow.showAtLocation(view, Gravity.TOP | Gravity.START, windowPos[0], windowPos[1]);
+
     }
 }

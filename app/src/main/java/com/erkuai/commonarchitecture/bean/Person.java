@@ -2,7 +2,10 @@ package com.erkuai.commonarchitecture.bean;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Property;
+
+import java.security.Principal;
 
 /**
  * Created by Administrator on 2019/11/13 9:20.
@@ -11,9 +14,11 @@ import org.greenrobot.greendao.annotation.Property;
 @Entity
 public class Person {
 
+
     @Property(nameInDb = "姓名")
     private String name;
 
+    @Id
     @Property(nameInDb = "电话号码")
     private String phone_number;
 
@@ -42,5 +47,4 @@ public class Person {
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
     }
-
 }
