@@ -111,7 +111,8 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
                         @Override
                         public void onTick(long millisUntilFinished) {
                             name.setText(dataList.get(integers.get(i)).getName());
-                            tel.setText(dataList.get(integers.get(i)).getPhone_number());
+                            String phone_number = dataList.get(integers.get(i)).getPhone_number();
+                            tel.setText(formatPhoneNumber(phone_number));
                             if (i == integers.size() - 1) {
                                 i = -1;
                             }
@@ -133,7 +134,7 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
                     for (int i = 0; i < dataList.size(); i++) {
                         if (dataList.get(i).getPhone_number().equals(phone_number_data)) {
                             name.setText(dataList.get(i).getName());
-                            tel.setText(dataList.get(i).getPhone_number());
+                            tel.setText(formatPhoneNumber(dataList.get(i).getPhone_number()));
                             break;
                         }
                     }
@@ -149,13 +150,17 @@ public class LotteryFragment extends BaseFragment<SimplePresenter> implements Si
         this.dataList = dataList;
         if (dataList.size() != 0) {
             name.setText(dataList.get(0).getName());
-            tel.setText(dataList.get(0).getPhone_number());
+            tel.setText(formatPhoneNumber(dataList.get(0).getPhone_number()));
             tel.setVisibility(View.VISIBLE);
         } else {
             name.setText("当前还没有人参与哦..");
             tel.setVisibility(View.GONE);
         }
 
+    }
+
+    private String formatPhoneNumber(String s) {
+        return s.replaceAll("(\\d{3})\\d{4}(\\d{4})", "$1****$2");
     }
 
 
